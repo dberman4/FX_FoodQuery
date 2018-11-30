@@ -1,0 +1,25 @@
+package GUI;
+
+import javafx.stage.*;
+import javafx.scene.*;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.geometry.*;
+
+public class AddFood {
+    static Stage window;
+
+    public static void display(){
+        window = new Stage();
+        window.setTitle("Add Food");
+        window.setMinWidth(300);
+
+        Label foodName = new Label("Food Name:");
+
+
+
+
+        window.show();
+
+    }
+}
