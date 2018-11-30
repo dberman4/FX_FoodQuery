@@ -51,7 +51,8 @@ public class Main extends Application {
         VBox filteredListBox = new VBox();
         Label filteredLabel = new Label("Filtered Food List");
         filteredLabel.setStyle("-fx-font-weight: bold");
-        filteredListBox.getChildren().addAll(filteredLabel, filteredList);
+        Label filteredCount = new Label("Number of Food Items: " + filteredList.getItems().size());
+        filteredListBox.getChildren().addAll(filteredLabel, filteredCount, filteredList);
 
         //create list block with label for meal items
         final ListView<String> mealList = new ListView<String>();
@@ -59,7 +60,8 @@ public class Main extends Application {
         VBox mealListBox = new VBox();
         Label mealLabel = new Label("Meal Food List:");
         mealLabel.setStyle("-fx-font-weight: bold");
-        mealListBox.getChildren().addAll(mealLabel, mealList);
+        Label mealCount = new Label("Number of Food Items: " + mealList.getItems().size());
+        mealListBox.getChildren().addAll(mealLabel, mealCount, mealList);
 
         Scene scene = new Scene(borderpane, 900, 300);
 
