@@ -2,61 +2,73 @@ package GUI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     Stage window;
-    Button filterBtn;
+    Button filterBtn, addBtn, loadBtn;
 
 
     @Override
     public void start(Stage primaryStage){
-         window = primaryStage;
-         window.setTitle("Food Logger");
-         window.setMinWidth(900);
+        window = primaryStage;
+        window.setTitle("Food Logger");
+        window.setMinWidth(900);
 
-         BorderPane borderpane = new BorderPane();
-         filterBtn = new Button("Filter");
-         filterBtn.setOnAction(event -> Filter.display());
-          Button analyzeMealBTN = new Button("Analyze Meal");
-			analyzeMealBTN.setOnAction(event ->
-			{
-				Filter.display();
-			}
-	);
-		
-			
-			DropShadow shadow = new DropShadow();
-			
-			//Adding the shadow when the mouse cursor is on
-			analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-			    new EventHandler<MouseEvent>() {
-			        @Override public void handle(MouseEvent e) {
-			        	analyzeMealBTN.setEffect(shadow);
-			        }
-			});
-			
-			
-			
-			VBox leftBox = new VBox();
-	         leftBox.getChildren().setAll(analyzeMealBTN);
-	         borderpane.setLeft(leftBox);
-         VBox rightBox = new VBox();
-         rightBox.getChildren().setAll(filterBtn);
+        BorderPane borderpane = new BorderPane();
+        GridPane topGrid = new GridPane();
+        topGrid.setPadding(new Insets(10, 10, 10, 10));
+        topGrid.setVgap(8);
+        topGrid.setHgap(10);
 
-         Scene scene = new Scene(borderpane, 900, 300);
+        filterBtn = new Button("Filter");
+        filterBtn.setOnAction(event -> Filter.display());
+
+        addBtn = new Button("Add Food");
+        addBtn.setOnAction(event -> AddFood.display());
+
+        loadBtn = new Button("Load Food");
+        loadBtn.setOnAction(event -> LoadFood.display());
+
+        topGrid.add(filterBtn, 0, 1);
+        topGrid.add(addBtn, 1,1);
+        topGrid.add(loadBtn, 2,1);
 
 
-         borderpane.setRight(rightBox);
-         window.setScene(scene);
-         window.show();
+        //create list block with label for filtered food items
+        final ListView<String> filteredList = new ListView<String>();
+        filteredList.setPrefWidth(120);
+        VBox filteredListBox = new VBox();
+        Label filteredLabel = new Label("Filtered Food List");
+        filteredLabel.setStyle("-fx-font-weight: bold");
+        filteredListBox.getChildren().addAll(filteredLabel, filteredList);
+
+        //create list block with label for meal items
+        final ListView<String> mealList = new ListView<String>();
+        filteredList.setPrefWidth(120);
+        VBox mealListBox = new VBox();
+        Label mealLabel = new Label("Meal Food List:");
+        mealLabel.setStyle("-fx-font-weight: bold");
+        mealListBox.getChildren().addAll(mealLabel, mealList);
+
+        Scene scene = new Scene(borderpane, 900, 300);
+
+
+        borderpane.setLeft(filteredListBox);
+        borderpane.setRight(mealListBox);
+        borderpane.setTop(topGrid);
+        window.setScene(scene);
+        window.show();
     }
 
 
