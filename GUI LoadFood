@@ -1,4 +1,4 @@
-package GUI;
+package application;
 
 import javafx.stage.*;
 import javafx.scene.*;
@@ -23,9 +23,14 @@ public class LoadFood {
         grid.setHgap(10);
 
 
+        Button btn = new Button("Submit");
+        btn.setOnAction(event -> {
+            window.close();
+        });
         grid.add(loadPath, 0,0);
-        grid.add(pathInput,0,1);
+        grid.add(pathInput,1,0);
 
+        grid.add(btn, 1,2);
         Scene scene = new Scene(grid);
         window.setScene(scene);
 
