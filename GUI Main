@@ -65,29 +65,21 @@ public class Main extends Application {
         
         
            
-          Button analyzeMealBTN = new Button("Analyze Meal");
-			analyzeMealBTN.setOnAction(event ->
-			{
-				AnalyzeMeal.display();
-			}
-	);
-		
+        Button analyzeMealBTN = new Button("Analyze Meal");
+	analyzeMealBTN.setOnAction(event -> AnalyzeMeal.display(););
+	DropShadow shadow = new DropShadow();
 			
-			DropShadow shadow = new DropShadow();
-			
-			//Adding the shadow when the mouse cursor is on
-			analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-			    new EventHandler<MouseEvent>() {
-			        @Override public void handle(MouseEvent e) {
-			        	analyzeMealBTN.setEffect(shadow);
-			        }
-			});
-			
-			
-			
-			VBox leftBox = new VBox();
-	         leftBox.getChildren().setAll(analyzeMealBTN);
-	         borderpane.setLeft(leftBox);
+	//Adding the shadow when the mouse cursor is on
+	analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED, 
+	new EventHandler<MouseEvent>() {
+	@Override public void handle(MouseEvent e) {
+	analyzeMealBTN.setEffect(shadow);
+	}
+	});
+					
+	VBox leftBox = new VBox();
+	leftBox.getChildren().setAll(analyzeMealBTN);
+	borderpane.setLeft(leftBox);
 
         Scene scene = new Scene(borderpane, 900, 300);
 
