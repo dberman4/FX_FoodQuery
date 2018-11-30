@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
 
     Stage window;
@@ -37,18 +36,30 @@ public class Main extends Application {
         filterBtn = new Button("Filter");
         filterBtn.setOnAction(event -> Filter.display());
 
-        addBtn = new Button("Add Food");
+        addBtn = new Button("Add Food Item");
         addBtn.setOnAction(event -> AddFood.display());
 
-        loadBtn = new Button("Load Food");
+        loadBtn = new Button("Import Food File");
         loadBtn.setOnAction(event -> LoadFood.display());
+        Button analyzeMealBTN = new Button("Analyze Meal");
+        analyzeMealBTN.setOnAction(event -> AnalyzeMeal.display());
+        DropShadow shadow = new DropShadow();
+
+        //Adding the shadow when the mouse cursor is on
+        analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        analyzeMealBTN.setEffect(shadow);
+                    }
+                });
 
         topGrid.add(filterBtn, 0, 1);
         topGrid.add(addBtn, 1,1);
         topGrid.add(loadBtn, 2,1);
+        topGrid.add(analyzeMealBTN, 3,1);
 
         GridPane leftGrid = new GridPane();
-        leftGrid.setPadding(new Insets(10, 10, 10, 10));
+        leftGrid.setPadding(new Insets(10, 20, 10, 20));
         leftGrid.setVgap(8);
         leftGrid.setHgap(10);
         //create list block with label for filtered food items
@@ -63,7 +74,7 @@ public class Main extends Application {
         leftGrid.add(filteredList, 0,1);
 
         GridPane rightGrid = new GridPane();
-        rightGrid.setPadding(new Insets(10, 10, 10, 10));
+        rightGrid.setPadding(new Insets(10, 20, 10, 20));
         rightGrid.setVgap(8);
         rightGrid.setHgap(10);
         //create list block with label for meal items
@@ -76,20 +87,7 @@ public class Main extends Application {
         mealListBox.getChildren().addAll(mealLabel, mealCount);
         rightGrid.add(mealListBox,0,0);
         rightGrid.add(mealList,0,1);
-        
-          
-        Button analyzeMealBTN = new Button("Analyze Meal");
-        analyzeMealBTN.setOnAction(event -> AnalyzeMeal.display());
-        DropShadow shadow = new DropShadow();
-			
-		//Adding the shadow when the mouse cursor is on
-		analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-		new EventHandler<MouseEvent>() {
-		@Override public void handle(MouseEvent e) {
-		analyzeMealBTN.setEffect(shadow);
-		}
-		});
-	topGrid.add(analyzeMealBTN, 3, 1);
+
         Scene scene = new Scene(borderpane, 900, 300);
 
 
