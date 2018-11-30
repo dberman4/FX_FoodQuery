@@ -29,8 +29,21 @@ public class Main extends Application {
 					System.out.println("Apple, Banana, Carrot, Corn, Dumpling, Fish, Pasta, Rice, Shrimp, Zuchini");
 				}
 		);
+			//create list block with label for filtered food items
+			final ListView<String> filteredList = new ListView<String>();
+			filteredList.setPrefWidth(120);
+			VBox filteredListBox = new VBox();
+			Label filteredLabel = new Label("Filtered Food List");
+			filteredLabel.setStyle("-fx-font-weight: bold");
+			filteredListBox.getChildren().addAll(filteredLabel, filteredList);
 			
-			
+			//create list block with label for meal items
+			final ListView<String> mealList = new ListView<String>();
+			filteredList.setPrefWidth(120);
+			VBox mealListBox = new VBox();
+			Label mealLabel = new Label("Meal Food List:");
+			mealLabel.setStyle("-fx-font-weight: bold");
+			mealListBox.getChildren().addAll(mealLabel, mealList);
 			
 			
 			
