@@ -89,7 +89,7 @@ public class Main extends Application {
 		analyzeMealBTN.setEffect(shadow);
 		}
 		});
-
+	topGrid.add(analyzeMealBTN, 3, 1);
         Scene scene = new Scene(borderpane, 900, 300);
 
 
