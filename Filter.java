@@ -5,32 +5,47 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
-
+/**
+ * Filename:   Filter.java
+ * Project:    Food Query
+ * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
+ * 
+ * Use this class for filter window to add a query to the food list
+ */
 public class Filter {
-    static Stage window;
+    static Stage window;    //window to be displayed
+    /**
+     * Displays the window
+     */
     public static void display(){
+        //set defaults for the window
         window = new Stage();
         window.setTitle("Filter");
         window.setMinWidth(300);
+        
+        //create a gridplane to set the items in to be displayed
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
         grid.setAlignment(Pos.CENTER);
+        
+        //create label and textfield for the name query
         Label nameFilter = new Label("Enter Text to Filter Food Names: ");
         TextField nameField = new TextField();
 
+        //create items for the nutrient query
         Label nutrientFilter = new Label("Enter Nutrient Information to add to Filter List: ");
         TextField nutrientField = new TextField();
         nutrientField.setText("<nutrient> <comparator> <value>");
         ListView<String> nutrientList = new ListView<String>();
 
-
+        //create button to add nutrient query to the nutrient query list
         Button addNutrientBtn = new Button("Add To Nutrient List");
         addNutrientBtn.setOnAction(event -> {
-            boolean shouldAdd = true;
-            String inputText = nutrientField.getText();
-            String[] inputArray = inputText.split(" ");
+            boolean shouldAdd = true;   //keep track of if it should be added
+            String inputText = nutrientField.getText(); //get input text
+            String[] inputArray = inputText.split(" "); //create array split by " "
             if (inputArray.length != 3) {
                 //display input error for format
                 shouldAdd = false;
@@ -38,6 +53,7 @@ public class Filter {
                 FilterError.display(inputText + " is not a valid input format.");
             }
             else {
+                //check to see that a correct nutrient is entered
                 switch (inputArray[0].toLowerCase()) {
                     case "calories":
                     case "carbs":
@@ -53,6 +69,7 @@ public class Filter {
                         break;
                 }
                 if (shouldAdd) {
+                    //check to see if a valid comparator is entered
                     switch (inputArray[1]) {
                         case "<=":
                         case ">=":
@@ -69,6 +86,7 @@ public class Filter {
                 if (shouldAdd) {
                     try
                     {
+                        //check to see if a valid double was entered
                         Double.parseDouble(inputArray[2]);
                     }
                     catch(NumberFormatException e)
@@ -80,6 +98,7 @@ public class Filter {
                     }
                 }
                 if (shouldAdd) {
+                    //add nutrient query to the list
                     nutrientList.getItems().add(inputText);
                 }
             }
@@ -88,12 +107,13 @@ public class Filter {
         });
 
 
-
+        //button to submit the entered filters
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
             window.close();
         });
         
+        //display the window
         grid.add(nameFilter,0,0);
         grid.add(nameField, 0,1);
         grid.add(nutrientFilter,0,2);
