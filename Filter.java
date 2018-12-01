@@ -12,7 +12,11 @@ public class Filter {
         window = new Stage();
         window.setTitle("Filter");
         window.setMinWidth(300);
-
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
+        grid.setAlignment(Pos.CENTER);
         Label nameFilter = new Label("Enter Text to Filter Food Names: ");
         TextField nameField = new TextField();
 
@@ -89,14 +93,15 @@ public class Filter {
         btn.setOnAction(event -> {
             window.close();
         });
-
-
-        VBox displayBox = new VBox();
-        displayBox.getChildren().addAll(nameFilter, nameField, nutrientFilter, nutrientField, 
-            addNutrientBtn, nutrientList, btn);
-
-
-        Scene scene = new Scene(displayBox);
+        
+        grid.add(nameFilter,0,0);
+        grid.add(nameField, 0,1);
+        grid.add(nutrientFilter,0,2);
+        grid.add(nutrientField,0,3);
+        grid.add(addNutrientBtn, 0,4);
+        grid.add(nutrientList,0,5);
+        grid.add(btn,0,6);
+        Scene scene = new Scene(grid);
         window.setScene(scene);
         window.show();
 
