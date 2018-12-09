@@ -197,7 +197,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#getFirstLeafKey()
          */
         K getFirstLeafKey() {
-            return this.children.get(0).getFirstLeafKey();
+            return children.get(0).getFirstLeafKey();
         }
         
         /**
@@ -205,7 +205,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#isOverflow()
          */
         boolean isOverflow() {
-            return this.children.size() > branchingFactor;
+            return children.size() > branchingFactor;
         }
         
         /**
@@ -224,7 +224,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
                 childLocation = -searchLocation -1;
             }
             //creates a new node and inserts the child into the list
-            Node child = this.children.get(childLocation);
+            Node child = children.get(childLocation);
             child.insert(key, value);
             
             //check to see if the child is now overflowed
@@ -235,14 +235,13 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
                 //checks to see if the key already exists in the list or not
                 if (searchLocation >= 0) {
                     childLocation = searchLocation + 1;
-                    //inserts the new split sibling at the correct location
-                    this.children.set(childLocation, newSibling);
                 }
                 else {
                     childLocation = -searchLocation -1;
-                    //inserts the new split sibling at the correct location
-                    this.children.set(childLocation + 1, newSibling);
                 }
+                //add the new sibling to the children and the first leaf of that to the keys
+                this.keys.add(childLocation, newSibling.getFirstLeafKey());
+                this.children.add(childLocation + 1, newSibling);
             }
             
             //check to see if the root is now overflowed as result
@@ -342,7 +341,7 @@ public class BPTree<K extends Comparable<K>, V> implements BPTreeADT<K, V> {
          * @see BPTree.Node#isOverflow()
          */
         boolean isOverflow() {
-            return this.values.size() > branchingFactor -1;
+            return this.values.size() > branchingFactor - 1;
         }
         
         /**
