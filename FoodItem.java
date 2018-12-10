@@ -1,3 +1,5 @@
+package application;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,9 @@ public class FoodItem {
      * @param id unique id of the food item 
      */
     public FoodItem(String id, String name) {
-        // TODO : Complete
+        this.id = id;
+        this.name = name;
+        nutrients = new HashMap<>();
     }
     
     /**
@@ -40,10 +44,7 @@ public class FoodItem {
      * 
      * @return id of the food item
      */
-    public String getID() {
-        // TODO : Complete
-        return null;
-    }
+    public String getID() { return id; }
     
     /**
      * Gets the nutrients of the food item
@@ -51,8 +52,7 @@ public class FoodItem {
      * @return nutrients of the food item
      */
     public HashMap<String, Double> getNutrients() {
-        // TODO : Complete
-        return null;
+        return nutrients;
     }
 
     /**
@@ -60,7 +60,12 @@ public class FoodItem {
      * If nutrient already exists, updates its value.
      */
     public void addNutrient(String name, double value) {
-        // TODO : Complete
+        if (name == null) return;
+        if (nutrients.containsKey(name)) {
+            nutrients.replace(name, value);
+            return;
+        }
+        nutrients.put(name, value);
     }
 
     /**
@@ -68,8 +73,11 @@ public class FoodItem {
      * If not present, then returns 0.
      */
     public double getNutrientValue(String name) {
-        // TODO : Complete
-        return 0;
+        if (name == null) return 0.0;
+        if (!nutrients.containsKey(name)){
+            return 0.0;
+        }
+        return nutrients.get(name);
     }
     
 }
