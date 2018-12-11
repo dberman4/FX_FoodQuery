@@ -30,7 +30,7 @@ public class Main extends Application {
     Stage window;   //stage to be displayed in the window
     Button filterBtn, addBtn, loadBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
-    static ArrayList<String> filterList;    //list to hold items to be filtered 
+    static ArrayList<String> filterList;    //list to hold items to use as filters
     /**
      * Starts the program
      * 
