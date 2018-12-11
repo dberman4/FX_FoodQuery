@@ -1,12 +1,14 @@
 package application;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 /**
- * Filename:   LoadFood.java
+ * Filename:   application.LoadFood.java
  * Project:    Food Query
  * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
  * 
@@ -14,6 +16,7 @@ import javafx.geometry.*;
  */
 public class LoadFood {
     static Stage window;
+
     /**
      * Displays the window to allow the user to load a food file
      */
@@ -21,6 +24,7 @@ public class LoadFood {
         window = new Stage();   //stage to be displayed
         window.setTitle("Load");
         window.setMinWidth(300);
+        String filepath;
 
         Label loadPath = new Label("Load Path:");
         TextField pathInput = new TextField();
@@ -33,7 +37,7 @@ public class LoadFood {
         //Submit button to allow for the user to submit the given file
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
-            //need to implement actual importing of file
+            Main.foodData.loadFoodItems(pathInput.getText());
             window.close();
         });
         grid.add(loadPath, 0,0);
@@ -42,8 +46,6 @@ public class LoadFood {
         grid.add(btn, 1,2);
         Scene scene = new Scene(grid);
         window.setScene(scene);
-
-
 
         //show the window
         window.show();
