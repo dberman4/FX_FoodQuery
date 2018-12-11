@@ -51,11 +51,11 @@ public class AddFood {
             String name = foodNameInput.getText();
             String idAdd = idInput.getText();
             if (idAdd.equals("")) {
-                Error.display("ID field cannot be empty!");
+                AlertBox.display("Error", "ID field cannot be empty!");
                 shouldAdd = false;
             }
             else if (name.equals("")) {
-                Error.display("Name field cannot be empty!");
+                AlertBox.display("Error", "Name field cannot be empty!");
                 shouldAdd = false;
             }
             else {
@@ -67,7 +67,7 @@ public class AddFood {
                         food.addNutrient("calories", caloriesAdd);
                     }
                     catch (NumberFormatException e) {
-                        Error.display("Enter valid calories!");
+                        AlertBox.display("Error", "Enter valid calories!");
                         shouldAdd = false;
                     }
                 }
@@ -77,7 +77,7 @@ public class AddFood {
                         double fatAdd = Double.parseDouble(fatInput.getText());
                         food.addNutrient("fat", fatAdd);                    }
                     catch (NumberFormatException e) {
-                        Error.display("Enter valid fat!");
+                        AlertBox.display("Error", "Enter valid fat!");
                         shouldAdd = false;
                     }
                 }
@@ -88,7 +88,7 @@ public class AddFood {
                         food.addNutrient("carbohydrate", carbAdd);
                     }
                     catch (NumberFormatException e) {
-                        Error.display("Enter valid carbohydrates!");
+                        AlertBox.display("Error", "Enter valid carbohydrates!");
                         shouldAdd = false;
                     }
                 }
@@ -99,7 +99,7 @@ public class AddFood {
                         food.addNutrient("fiber", fiberAdd);
                     }
                     catch (NumberFormatException e) {
-                        Error.display("Enter valid fiber!");
+                        AlertBox.display("Error", "Enter valid fiber!");
                         shouldAdd = false;
                     }
                 }
@@ -110,7 +110,7 @@ public class AddFood {
                         food.addNutrient("protein", proteinAdd);
                     }
                     catch (NumberFormatException e) {
-                        Error.display("Enter valid protein!");
+                        AlertBox.display("Error", "Enter valid protein!");
                         shouldAdd = false;
                     }
                 }
