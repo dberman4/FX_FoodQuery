@@ -35,7 +35,7 @@ public class Main extends Application {
     Button filterBtn, addBtn, loadBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
     static ArrayList<String> filterList;    //list to hold items to be filtered
-    static ArrayList<FoodData> mealArrayList;   //list to hold the meal food data
+    static ArrayList<String> mealArrayList;   //list to hold the meal food names
     /**
      * Starts the program
      * 
