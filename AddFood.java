@@ -47,20 +47,84 @@ public class AddFood {
         //creates submit button to allow the user to submit
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
-            FoodItem food = new FoodItem(idInput.getText(), foodNameInput.getText());
-            food.addNutrient("calories", Double.parseDouble(caloriesInput.getText()));
-            food.addNutrient("fat", Double.parseDouble(fatInput.getText()));
-            food.addNutrient("carbohydrate", Double.parseDouble(carbohydrateInput.getText()));
-            food.addNutrient("fiber", Double.parseDouble(fiberInput.getText()));
-            food.addNutrient("protein", Double.parseDouble(proteinInput.getText()));
-            //need to implement actual adding of the food
-            Main.foodData.addFoodItem(food);
-            AlertBox.display("Add Food", "Successfully add Food Item!");
-            window.close();
+            boolean shouldAdd = true;
+            String name = foodNameInput.getText();
+            String idAdd = idInput.getText();
+            if (idAdd.equals("")) {
+                Error.display("ID field cannot be empty!");
+                shouldAdd = false;
+            }
+            else if (name.equals("")) {
+                Error.display("Name field cannot be empty!");
+                shouldAdd = false;
+            }
+            else {
+                FoodItem food = new FoodItem(idInput.getText(), name);
+                //check to see if the calories was entered correctly
+                if (shouldAdd) {
+                    try {
+                        double caloriesAdd = Double.parseDouble(caloriesInput.getText());
+                        food.addNutrient("calories", caloriesAdd);
+                    }
+                    catch (NumberFormatException e) {
+                        Error.display("Enter valid calories!");
+                        shouldAdd = false;
+                    }
+                }
+                //check to see if the fat was entered correctly
+                if (shouldAdd) {
+                    try {
+                        double fatAdd = Double.parseDouble(fatInput.getText());
+                        food.addNutrient("fat", fatAdd);                    }
+                    catch (NumberFormatException e) {
+                        Error.display("Enter valid fat!");
+                        shouldAdd = false;
+                    }
+                }
+                //check to see if the carbohydrate was entered correctly
+                if (shouldAdd) {
+                    try {
+                        double carbAdd = Double.parseDouble(carbohydrateInput.getText());
+                        food.addNutrient("carbohydrate", carbAdd);
+                    }
+                    catch (NumberFormatException e) {
+                        Error.display("Enter valid carbohydrates!");
+                        shouldAdd = false;
+                    }
+                }
+                //check to see if fiber was entered correctly
+                if (shouldAdd) {
+                    try {
+                        double fiberAdd = Double.parseDouble(fiberInput.getText());
+                        food.addNutrient("fiber", fiberAdd);
+                    }
+                    catch (NumberFormatException e) {
+                        Error.display("Enter valid fiber!");
+                        shouldAdd = false;
+                    }
+                }
+                //check to see if protein was entered correctly
+                if (shouldAdd) {
+                    try {
+                        double proteinAdd = Double.parseDouble(proteinInput.getText());
+                        food.addNutrient("protein", proteinAdd);
+                    }
+                    catch (NumberFormatException e) {
+                        Error.display("Enter valid protein!");
+                        shouldAdd = false;
+                    }
+                }
+                //add the new food to foodData
+                if (shouldAdd) {
+                    Main.foodData.addFoodItem(food);
+                    AlertBox.display("Add Food", "Successfully add Food Item!");
+                    window.close();
+                }
+            }
         });
 
         Label prompt = new Label("Type to add a new food:");
-        
+
         //creates the grid to be displayed
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
