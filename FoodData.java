@@ -71,36 +71,42 @@ public class FoodData implements FoodDataADT<FoodItem> {
             while ((line = reader.readLine()) != null) {
                 scanner = new Scanner(line);
                 scanner.useDelimiter(",");
-                if (scanner.hasNext()) {
-                    id = scanner.next();
-                } else {
-                    continue;
-                }
+                id = scanner.next();
+
                 if (scanner.hasNext()) name = scanner.next();
                 FoodItem food = new FoodItem(id, name);
+
+                if (id.equals("")) continue;
+
                 while (scanner.hasNext()) {
-                    Double data = scanner.nextDouble();
+                    String item = scanner.next();
                     if (index == 1){
+                        Double data = Double.parseDouble(item);
                         food.addNutrient("calories", data);
                         indexes.get("calories").insert(data, food);
+
                     }
 
                     else if (index == 3){
+                        Double data = Double.parseDouble(item);
                         food.addNutrient("fat", data);
                         indexes.get("fat").insert(data, food);
                     }
 
                     else if (index == 5){
+                        Double data = Double.parseDouble(item);
                         food.addNutrient("carbohydrate", data);
                         indexes.get("carbohydrate").insert(data, food);
                     }
 
                     else if (index == 7){
+                        Double data = Double.parseDouble(item);
                         food.addNutrient("fiber", data);
                         indexes.get("fiber").insert(data, food);
                     }
 
                     else if (index == 9){
+                        Double data = Double.parseDouble(item);
                         food.addNutrient("protein", data);
                         indexes.get("protein").insert(data, food);
                     }
@@ -228,4 +234,5 @@ public class FoodData implements FoodDataADT<FoodItem> {
     public void saveFoodItems(String filename){
 
     }
+
 }
