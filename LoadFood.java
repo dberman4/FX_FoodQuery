@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.*;
@@ -36,9 +37,16 @@ public class LoadFood {
         //Submit button to allow for the user to submit the given file
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
-            Main.foodData.loadFoodItems(pathInput.getText());
-            AlertBox.display("LoadFood", "The food list has been loaded successfully!");
-            window.close();
+            String path = pathInput.getText();
+            File tryOpen = new File(path);
+            if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
+                Main.foodData.loadFoodItems(pathInput.getText());
+                AlertBox.display("LoadFood", "The food list has been loaded successfully!");
+                window.close();
+            }
+            else {
+                AlertBox.display("Error", "\"" +path + "\" does not exist");
+            }
         });
         grid.add(loadPath, 0,0);
         grid.add(pathInput,1,0);
