@@ -1,7 +1,10 @@
 package application;
 
+import java.awt.List;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +33,7 @@ public class Main extends Application {
     Stage window;   //stage to be displayed in the window
     Button filterBtn, addBtn, loadBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
-    static ArrayList<String> filterList;    //list to hold items to use as filters
+    static ArrayList<String> filterList;    //list to hold items to be filtered 
     /**
      * Starts the program
      * 
@@ -95,7 +98,7 @@ public class Main extends Application {
             rightGrid.add(mealListBox,0,0);
             rightGrid.add(mealList,0,1);
 
-          //create new filter button and set the action
+            //create new filter button and set the action
             filterBtn = new Button("Filter");
             filterBtn.setOnAction(event -> {
                 Filter.display();
@@ -107,23 +110,44 @@ public class Main extends Application {
             addBtn = new Button("Add Food");
             addBtn.setOnAction(event -> {
                 AddFood.display();
-                //TODO add food to filtered list
+                filteredList.getItems().clear();
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName());
+                }
+                Collections.sort(addNames);
+                for (int i = 0; i < addList.size(); i++) {
+                    filteredList.getItems().add(addNames.get(i).toLowerCase());
+                }
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
 
             //create new load food button and set the action
             loadBtn = new Button("Load Food");
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
-                //TODO display new list in filtered list
+                filteredList.getItems().clear();
+                filteredList.getItems().clear();
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName().toLowerCase());
+                }
+                Collections.sort(addNames);
+                for (int i = 0; i < addList.size(); i++) {
+                    filteredList.getItems().add(addNames.get(i));
+                }
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
-            
+
             //TODO be able to click on food in filtered list and add it to meal list, hides it then from filtered list
 
             //add the buttons to the grid
             topGrid.add(filterBtn, 0, 1);
             topGrid.add(addBtn, 1,1);
             topGrid.add(loadBtn, 2,1);
-            
+
             Button analyzeMealBTN = new Button("Analyze Meal");
             analyzeMealBTN.setOnAction(event -> {
                 AnalyzeMeal.display();
