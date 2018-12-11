@@ -4,6 +4,7 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import java.util.ArrayList;
 import javafx.geometry.*;
 /**
  * Filename:   Filter.java
@@ -14,6 +15,7 @@ import javafx.geometry.*;
  */
 public class Filter {
     static Stage window;    //window to be displayed
+    
     /**
      * Displays the window
      */
@@ -33,7 +35,7 @@ public class Filter {
         //create label and textfield for the name query
         Label nameFilter = new Label("Enter Text to Filter Food Names: ");
         TextField nameField = new TextField();
-
+        nameField.setText("");
         //create items for the nutrient query
         Label nutrientFilter = new Label("Enter Nutrient Information to add to Filter List: ");
         TextField nutrientField = new TextField();
@@ -110,6 +112,12 @@ public class Filter {
         //button to submit the entered filters
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
+            Main.filterList = new ArrayList<String>();
+            String nameSearch = nameField.getText();
+            if (!nameSearch.equals("")) {
+                Main.filterList.add(nameSearch);
+            }
+            Main.filterList.addAll(nutrientList.getItems());
             window.close();
         });
         
