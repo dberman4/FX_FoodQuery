@@ -4,6 +4,7 @@ import java.awt.List;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -33,7 +34,8 @@ public class Main extends Application {
     Stage window;   //stage to be displayed in the window
     Button filterBtn, addBtn, loadBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
-    static ArrayList<String> filterList;    //list to hold items to be filtered 
+    static ArrayList<String> filterList;    //list to hold items to be filtered
+    static ArrayList<FoodData> mealArrayList;   //list to hold the meal food data
     /**
      * Starts the program
      * 
@@ -128,7 +130,6 @@ public class Main extends Application {
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
                 filteredList.getItems().clear();
-                filteredList.getItems().clear();
                 ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
                 ArrayList<String> addNames = new ArrayList<String>();
                 for (int i = 0; i < addList.size(); i++) {
@@ -140,9 +141,43 @@ public class Main extends Application {
                 }
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
-
+            ArrayList<String> mealArrayList = new ArrayList<String>();
             //TODO be able to click on food in filtered list and add it to meal list, hides it then from filtered list
-
+            filteredList.setOnMouseClicked(event -> {
+                mealArrayList.add(filteredList.getSelectionModel().getSelectedItem());
+                
+                HashSet<String> meal = new HashSet<String>();
+                meal.addAll(mealArrayList);
+                HashSet<String> list = new HashSet<String>();
+                
+                filteredList.getItems().clear();
+                mealList.getItems().clear();
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName().toLowerCase());
+                }
+                
+                list.addAll(addNames);
+                
+                list.removeAll(meal);
+                
+                addNames.clear();
+                addNames.addAll(list);
+                
+                Collections.sort(addNames);
+                Collections.sort(mealArrayList);
+                for (int i = 0; i < addNames.size(); i++) {
+                    filteredList.getItems().add(addNames.get(i).toLowerCase());
+                }
+                for (int i = 0; i < mealArrayList.size(); i++) {
+                    mealList.getItems().add(mealArrayList.get(i).toLowerCase());
+                }
+                
+                mealCount.setText("Number of Food Items: " + mealList.getItems().size());
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+            });
+            
             //add the buttons to the grid
             topGrid.add(filterBtn, 0, 1);
             topGrid.add(addBtn, 1,1);
