@@ -1,5 +1,7 @@
 package application;
 
+import java.io.FileInputStream;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -124,7 +126,7 @@ public class Main extends Application {
         topGrid.add(analyzeMealBTN, 3, 1);
         
         //adding the image to the center of the program
-        Image image = new Image("https://raw.githubusercontent.com/dberman4/FX_FoodQuery/master/food%20logger.png?token=AiiIBi6nYfeqtFoPUOjlqmWIcJ97S6dAks5cCvxswA%3D%3D", 450, 200, false, false);
+        Image image = new Image(new FileInputStream("food_logger.png"), 450, 200, false, false);
         ImageView imageView = new ImageView(image);
         imageView.setImage(image);
         imageView.setX(50);
