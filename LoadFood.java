@@ -24,7 +24,6 @@ public class LoadFood {
         window = new Stage();   //stage to be displayed
         window.setTitle("Load");
         window.setMinWidth(300);
-        String filepath;
 
         Label loadPath = new Label("Load Path:");
         TextField pathInput = new TextField();
@@ -38,6 +37,7 @@ public class LoadFood {
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
             Main.foodData.loadFoodItems(pathInput.getText());
+            AlertBox.display("LoadFood", "The food list has been loaded successfully!");
             window.close();
         });
         grid.add(loadPath, 0,0);
