@@ -21,7 +21,7 @@ public class AlertBox {
         grid.setHgap(10);
         Label label = new Label();
         label.setText(message);
-        Button closeButton = new Button("Cool!");
+        Button closeButton = new Button("Okay");
         closeButton.setOnAction(e -> window.close());
 
         VBox layout = new VBox(10);
