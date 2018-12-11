@@ -59,6 +59,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
+        List<FoodItem> newList = new ArrayList<FoodItem>();
         try{
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
@@ -114,9 +115,10 @@ public class FoodData implements FoodDataADT<FoodItem> {
                     index++;
                 }
                 index = 0;
-                foodItemList.add(food);
+                newList.add(food);
 
             }
+            foodItemList = newList;
             //close reader
             reader.close();
         } catch (IOException e) {
