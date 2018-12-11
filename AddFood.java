@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 
 import javax.xml.soap.Text;
 /**
- * Filename:   AddFood.java
+ * Filename:   application.AddFood.java
  * Project:    Food Query
  * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
  * 
@@ -24,6 +24,7 @@ public class AddFood {
         window = new Stage();   //creates the stage
         window.setTitle("Add A Food Item");
         window.setMinWidth(300);
+
 
         //creates labels for each field
         Label id = new Label("id:");
@@ -42,14 +43,19 @@ public class AddFood {
         TextField carbohydrateInput = new TextField();
         TextField fiberInput = new TextField();
         TextField proteinInput = new TextField();
-
+        // calories,fat,carbohydrate,fiber,protein
         //creates submit button to allow the user to submit
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
-            
-            
+            FoodItem food = new FoodItem(idInput.getText(), foodNameInput.getText());
+            food.addNutrient("calories", Double.parseDouble(caloriesInput.getText()));
+            food.addNutrient("fat", Double.parseDouble(fatInput.getText()));
+            food.addNutrient("carbohydrate", Double.parseDouble(carbohydrateInput.getText()));
+            food.addNutrient("fiber", Double.parseDouble(fiberInput.getText()));
+            food.addNutrient("protein", Double.parseDouble(proteinInput.getText()));
             //need to implement actual adding of the food
-            
+            Main.foodData.addFoodItem(food);
+            AlertBox.display("Add Food", "Successfully add Food Item!");
             window.close();
         });
 
