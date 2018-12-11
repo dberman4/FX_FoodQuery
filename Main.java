@@ -142,9 +142,46 @@ public class Main extends Application {
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
             ArrayList<String> mealArrayList = new ArrayList<String>();
-            //TODO be able to click on food in filtered list and add it to meal list, hides it then from filtered list
+            
+            //click on food in filtered list and add it to meal list, hides it then from filtered list
             filteredList.setOnMouseClicked(event -> {
                 mealArrayList.add(filteredList.getSelectionModel().getSelectedItem());
+                
+                HashSet<String> meal = new HashSet<String>();
+                meal.addAll(mealArrayList);
+                HashSet<String> list = new HashSet<String>();
+                
+                filteredList.getItems().clear();
+                mealList.getItems().clear();
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName().toLowerCase());
+                }
+                
+                list.addAll(addNames);
+                
+                list.removeAll(meal);
+                
+                addNames.clear();
+                addNames.addAll(list);
+                
+                Collections.sort(addNames);
+                Collections.sort(mealArrayList);
+                for (int i = 0; i < addNames.size(); i++) {
+                    filteredList.getItems().add(addNames.get(i).toLowerCase());
+                }
+                for (int i = 0; i < mealArrayList.size(); i++) {
+                    mealList.getItems().add(mealArrayList.get(i).toLowerCase());
+                }
+                
+                mealCount.setText("Number of Food Items: " + mealList.getItems().size());
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+            });
+            
+            //click on food in meal list and remove it from the meal list, adds it to filtered list
+            mealList.setOnMouseClicked(event -> {
+                mealArrayList.remove(mealList.getSelectionModel().getSelectedItem());
                 
                 HashSet<String> meal = new HashSet<String>();
                 meal.addAll(mealArrayList);
