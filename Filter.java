@@ -50,7 +50,7 @@ public class Filter {
                 //display input error for format
                 shouldAdd = false;
                 nutrientField.setText("<nutrient> <comparator> <value>");
-                FilterError.display(inputText + " is not a valid input format.");
+                AlertBox.display("Error", inputText + " is not a valid input format.");
             }
             else {
                 //check to see that a correct nutrient is entered
@@ -65,7 +65,7 @@ public class Filter {
                         //display input error for nutrient
                         shouldAdd = false;
                         nutrientField.setText("<nutrient> <comparator> <value>");
-                        FilterError.display(inputArray[0].toString() + " is not a valid nutrient.");
+                        AlertBox.display("Error", inputArray[0].toString() + " is not a valid nutrient.");
                         break;
                 }
                 if (shouldAdd) {
@@ -79,7 +79,7 @@ public class Filter {
                             //display input error for comparator
                             shouldAdd = false;
                             nutrientField.setText("<nutrient> <comparator> <value>");
-                            FilterError.display(inputArray[1].toString() + " is not a valid comparator.");
+                            AlertBox.display("Error", inputArray[1].toString() + " is not a valid comparator.");
                             break;
                     }
                 }
@@ -94,7 +94,7 @@ public class Filter {
                         //display input error for value
                         shouldAdd = false;
                         nutrientField.setText("<nutrient> <comparator> <value>");
-                        FilterError.display(inputArray[2].toString() + " is not a valid value.");
+                        AlertBox.display("Error", inputArray[2].toString() + " is not a valid value.");
                     }
                 }
                 if (shouldAdd) {
