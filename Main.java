@@ -37,9 +37,9 @@ public class Main extends Application {
 
     Stage window;   //stage to be displayed in the window
     Button filterBtn, addBtn, loadBtn, saveFoodBtn, saveMealBtn;  //buttons created in the window
-    static FoodData foodData = new FoodData();
-    static FoodData newMeal = new FoodData();
-    HashMap<String, FoodItem> nameToFood = new HashMap<>();
+    static FoodData foodData = new FoodData(); // Store food List
+    static FoodData newMeal = new FoodData(); // Store meal List
+    HashMap<String, FoodItem> nameToFood = new HashMap<>(); // mapping name to FoodItem
     static ArrayList<String> filterList;    //list to hold items to be filtered
     static ArrayList<String> mealArrayList;   //list to hold the meal food names
     static String   path;   //used to see if a new path was entered
@@ -281,7 +281,9 @@ public class Main extends Application {
 
             });
 
+            // Save food list when usr click the btn
             saveFoodBtn = new Button("Save Food");
+            // Save meal list when usr click the btn
             saveMealBtn = new Button("Save Meal");
             saveFoodBtn.setOnAction(event -> {
                 foodData.saveFoodItems("new_food_list.csv");
@@ -413,20 +415,12 @@ public class Main extends Application {
             topGrid.add(saveFoodBtn,4,1);
             topGrid.add(saveMealBtn,5,1);
 
+            // Click btn to open a new window shows all nutrient info of the meal
             Button analyzeMealBTN = new Button("Analyze Meal");
             analyzeMealBTN.setOnAction(event -> {
-
                 AnalyzeMeal.display();
             });
-            DropShadow shadow = new DropShadow();
 
-            //Adding the shadow when the mouse cursor is on
-            analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    analyzeMealBTN.setEffect(shadow);
-                }
-            });
             topGrid.add(analyzeMealBTN, 3, 1);
 
             //adding the image to the center of the program
