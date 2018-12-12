@@ -25,6 +25,9 @@ public class LoadFood {
         window = new Stage();   //stage to be displayed
         window.setTitle("Load");
         window.setMinWidth(300);
+        
+        window.initModality(Modality.APPLICATION_MODAL);
+
 
         Label loadPath = new Label("Load Path:");
         TextField pathInput = new TextField();
@@ -38,6 +41,7 @@ public class LoadFood {
         Button btn = new Button("Submit");
         btn.setOnAction(event -> {
             String path = pathInput.getText();
+            Main.path = path;
             File tryOpen = new File(path);
             if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
                 Main.foodData.loadFoodItems(pathInput.getText());
