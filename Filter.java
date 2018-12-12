@@ -25,6 +25,8 @@ public class Filter {
         window.setTitle("Filter");
         window.setMinWidth(300);
 
+        window.initModality(Modality.APPLICATION_MODAL);
+        
         //create a gridplane to set the items in to be displayed
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -129,7 +131,7 @@ public class Filter {
         grid.add(btn,0,6);
         Scene scene = new Scene(grid);
         window.setScene(scene);
-        window.show();
+        window.showAndWait();
 
     }
 }
