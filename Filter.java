@@ -37,11 +37,11 @@ public class Filter {
         //create label and textfield for the name query
         Label nameFilter = new Label("Enter Text to Filter Food Names: ");
         TextField nameField = new TextField();
-        nameField.setText("");
+        nameField.setPromptText("<key word>");
         //create items for the nutrient query
         Label nutrientFilter = new Label("Enter Nutrient Information to add to Filter List: ");
         TextField nutrientField = new TextField();
-        nutrientField.setText("<nutrient> <comparator> <value>");
+        nutrientField.setPromptText("<nutrient> <comparator> <value>");
         ListView<String> nutrientList = new ListView<String>();
 
         //create button to add nutrient query to the nutrient query list
