@@ -4,9 +4,12 @@ import java.awt.List;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,7 +29,7 @@ import javafx.stage.Stage;
  * Filename:   application.Main.java
  * Project:    Food Query
  * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
- * 
+ *
  * Use this class for starting the application
  */
 public class Main extends Application {
@@ -34,11 +37,13 @@ public class Main extends Application {
     Stage window;   //stage to be displayed in the window
     Button filterBtn, addBtn, loadBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
+    static FoodData newMeal = new FoodData();
+    HashMap<String, FoodItem> nameToFood = new HashMap<>();
     static ArrayList<String> filterList;    //list to hold items to be filtered
-    static ArrayList<String> mealArrayList;   //list to hold the meal food 
+    static ArrayList<String> mealArrayList;   //list to hold the meal food names
     /**
      * Starts the program
-     * 
+     *
      * @param primaryStage Stage to be given as the primary stage to
      *                              start the program with
      */
@@ -66,6 +71,7 @@ public class Main extends Application {
 
             //create list block with label for filtered food items
             final ListView<String> filteredList = new ListView<String>();
+
             filteredList.setPrefWidth(120);
             VBox filteredListBox = new VBox();
             Label filteredLabel = new Label("Filtered Food List");
@@ -105,38 +111,6 @@ public class Main extends Application {
             filterBtn.setOnAction(event -> {
                 Filter.display();
                 //TODO add functionality to compare the applied filters
-                String nameSearch = filterList.get(0);
-                filterList.remove(0);
-                HashSet<FoodItem> nameFilterSet = new HashSet<FoodItem>();
-                HashSet<FoodItem> nutrientFilterSet = new HashSet<FoodItem>();
-                boolean filteredName = false;
-                boolean filteredNutrient = false;
-                if (!nameSearch.equals("")) {
-                    java.util.List<FoodItem> nameFilterList = foodData.filterByName(nameSearch);
-                    nameFilterSet.addAll(nameFilterList);
-                    filteredName = true;
-                }
-                if (filterList.size() > 0) {
-                    java.util.List<FoodItem> nutrientFilterList = foodData.filterByNutrients(filterList);
-                    nutrientFilterSet.addAll(nutrientFilterList);
-                    filteredNutrient = true;
-                }
-                if (filteredName && filteredNutrient) {
-                    //display list with filtered for both 
-                }
-                else if (filteredName){
-                    //display list with only filtered name
-
-                }
-                else if (filteredNutrient) {
-                    //display list with only filtered nutrient
-                    
-                }
-                else {
-                    //display list with no filter
-                    
-                }
-
                 //TODO display the filtered list in filteredList
             });
 
@@ -144,42 +118,45 @@ public class Main extends Application {
             addBtn = new Button("Add Food");
             addBtn.setOnAction(event -> {
                 AddFood.display();
-                filteredList.getItems().clear();
-                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
-                ArrayList<String> addNames = new ArrayList<String>();
-                for (int i = 0; i < addList.size(); i++) {
-                    addNames.add(addList.get(i).getName());
+                for (FoodItem i : foodData.getAllFoodItems()){
+                    nameToFood.put(i.getName().toLowerCase(), i);
                 }
+                ArrayList<String> addNames = new ArrayList<>();
+                addNames.addAll(nameToFood.keySet());
                 Collections.sort(addNames);
-                for (int i = 0; i < addList.size(); i++) {
-                    filteredList.getItems().add(addNames.get(i).toLowerCase());
-                }
+                ObservableList<String> items = FXCollections.observableArrayList (
+                        addNames);
+                filteredList.setItems(items);
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
-            ArrayList<String> mealArrayList = new ArrayList<String>();
+
             //create new load food button and set the action
             loadBtn = new Button("Load Food");
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
                 filteredList.getItems().clear();
-                mealList.getItems().clear();
-                mealArrayList.clear();
-                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
-                ArrayList<String> addNames = new ArrayList<String>();
-                for (int i = 0; i < addList.size(); i++) {
-                    addNames.add(addList.get(i).getName().toLowerCase());
+                for (FoodItem i : foodData.getAllFoodItems()){
+                    nameToFood.put(i.getName().toLowerCase(), i);
                 }
+
+                ArrayList<String> addNames = new ArrayList<>();
+                addNames.addAll(nameToFood.keySet());
                 Collections.sort(addNames);
-                for (int i = 0; i < addList.size(); i++) {
-                    filteredList.getItems().add(addNames.get(i));
-                }
+                ObservableList<String> items = FXCollections.observableArrayList (
+                        addNames);
+                filteredList.getItems().addAll(items);
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
-
+            ArrayList<String> mealArrayList = new ArrayList<String>();
 
             //click on food in filtered list and add it to meal list, hides it then from filtered list
+
             filteredList.setOnMouseClicked(event -> {
-                if (filteredList.getSelectionModel().getSelectedIndex() >= 0) {
+                if (!(filteredList.getItems().size() == 0)) {
+                    if(filteredList.getSelectionModel().getSelectedItem()!= null){
+                        newMeal.addFoodItem(nameToFood.get(filteredList.getSelectionModel().getSelectedItem().toLowerCase()));
+                    }
+
                     mealArrayList.add(filteredList.getSelectionModel().getSelectedItem());
                     //hashset to use to compare meal items
                     HashSet<String> meal = new HashSet<String>();
@@ -231,54 +208,53 @@ public class Main extends Application {
 
             //click on food in meal list and remove it from the meal list, adds it to filtered list
             mealList.setOnMouseClicked(event -> {
-                if (filteredList.getSelectionModel().getSelectedIndex() >= 0) {
-                    //remove the item from the meal list
-                    mealArrayList.remove(mealList.getSelectionModel().getSelectedItem());
-                    //hashset to use to compare the meal list
-                    HashSet<String> meal = new HashSet<String>();
-                    meal.addAll(mealArrayList);
-                    //hashset to use to compare the food list
-                    HashSet<String> list = new HashSet<String>();
-                    //hashset used to compare the filtered items
-                    HashSet<String> filtered = new HashSet<String>();
-                    //TODO get filtered items
 
-                    //clear lists to update the display
-                    filteredList.getItems().clear();
-                    mealList.getItems().clear();
-                    //get all the food items
-                    ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
-                    ArrayList<String> addNames = new ArrayList<String>();
-                    //get names of food items
-                    for (int i = 0; i < addList.size(); i++) {
-                        addNames.add(addList.get(i).getName().toLowerCase());
-                    }
-                    //add all names to set to be compared
-                    list.addAll(addNames);
-                    //remove the meal items from the set
-                    list.removeAll(meal);
-                    //get rid of the non-filtered items
-                    if (!filtered.isEmpty()) {
-                        list.retainAll(filtered);
-                    }
-                    //add all the compared to the list to be displayed
-                    addNames.clear();
-                    addNames.addAll(list);
-                    //sort in alphabetical order
-                    Collections.sort(addNames);
-                    Collections.sort(mealArrayList);
-                    //display the filtered list
-                    for (int i = 0; i < addNames.size(); i++) {
-                        filteredList.getItems().add(addNames.get(i).toLowerCase());
-                    }
-                    //display the meal list
-                    for (int i = 0; i < mealArrayList.size(); i++) {
-                        mealList.getItems().add(mealArrayList.get(i).toLowerCase());
-                    }
-                    //update the item counters
-                    mealCount.setText("Number of Food Items: " + mealList.getItems().size());
-                    filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                //remove the item from the meal list
+                mealArrayList.remove(mealList.getSelectionModel().getSelectedItem());
+                //hashset to use to compare the meal list
+                HashSet<String> meal = new HashSet<String>();
+                meal.addAll(mealArrayList);
+                //hashset to use to compare the food list
+                HashSet<String> list = new HashSet<String>();
+                //hashset used to compare the filtered items
+                HashSet<String> filtered = new HashSet<String>();
+                //TODO get filtered items
+
+                //clear lists to update the display
+                filteredList.getItems().clear();
+                mealList.getItems().clear();
+                //get all the food items
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                //get names of food items
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName().toLowerCase());
                 }
+                //add all names to set to be compared
+                list.addAll(addNames);
+                //remove the meal items from the set
+                list.removeAll(meal);
+                //get rid of the non-filtered items
+                if (!filtered.isEmpty()) {
+                    list.retainAll(filtered);
+                }
+                //add all the compared to the list to be displayed
+                addNames.clear();
+                addNames.addAll(list);
+                //sort in alphabetical order
+                Collections.sort(addNames);
+                Collections.sort(mealArrayList);
+                //display the filtered list
+                for (int i = 0; i < addNames.size(); i++) {
+                    filteredList.getItems().add(addNames.get(i).toLowerCase());
+                }
+                //display the meal list
+                for (int i = 0; i < mealArrayList.size(); i++) {
+                    mealList.getItems().add(mealArrayList.get(i).toLowerCase());
+                }
+                //update the item counters
+                mealCount.setText("Number of Food Items: " + mealList.getItems().size());
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
 
             //add the buttons to the grid
@@ -288,18 +264,18 @@ public class Main extends Application {
 
             Button analyzeMealBTN = new Button("Analyze Meal");
             analyzeMealBTN.setOnAction(event -> {
+
                 AnalyzeMeal.display();
-                //TODO finish AnalyzeMeal.java to actually analyze it
             });
             DropShadow shadow = new DropShadow();
 
             //Adding the shadow when the mouse cursor is on
-            analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED, 
-                new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    analyzeMealBTN.setEffect(shadow);
-                }
-            });
+            analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            analyzeMealBTN.setEffect(shadow);
+                        }
+                    });
             topGrid.add(analyzeMealBTN, 3, 1);
 
             //adding the image to the center of the program
@@ -326,7 +302,7 @@ public class Main extends Application {
     }
     /**
      * Launch the program
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
