@@ -153,7 +153,7 @@ public class AddFood {
         //displays the window
         Scene scene = new Scene(grid);
         window.setScene(scene);
-        window.show();
+        window.showAndWait();
 
     }
 }
