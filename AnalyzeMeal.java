@@ -31,7 +31,8 @@ public class AnalyzeMeal {
     static Stage window;
 
     /**
-     * Display this window when usr click analyze meal button
+     * Display this window when usr click analyze meal button and show \
+     * nutrient value of current meal 
      */
     public static void display(){
         window = new Stage(); // set main stage for this window
@@ -87,12 +88,14 @@ public class AnalyzeMeal {
         TableColumn lastCol = new TableColumn("Nutrition");
         lastCol.setCellValueFactory(new PropertyValueFactory<TableItem, Double>("value"));
 
+        // Initial nutrient values sum
         Double calories = 0.0;
         Double fat = 0.0;
         Double carbohydrate = 0.0;
         Double fiber = 0.0;
         Double protein = 0.0;
 
+        // iteratively sum nutrient value of each FoodItem
         for (FoodItem i : mealList.getAllFoodItems()){
             calories += i.getNutrientValue("calories");
         }
@@ -109,7 +112,7 @@ public class AnalyzeMeal {
             protein += i.getNutrientValue("protein");
         }
 
-        // sample data to show
+        // store sum value into observableList so it could change dynamically
         ObservableList<TableItem> data = FXCollections.observableArrayList(
                 new TableItem ("Calories", calories),
                 new TableItem ("Fat", fat),
@@ -118,6 +121,7 @@ public class AnalyzeMeal {
                 new TableItem ("Protein", protein)
         );
 
+        // write data into the table
         table.setItems(data);
         table.getColumns().addAll(firstCol, lastCol);
 
