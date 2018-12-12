@@ -103,7 +103,7 @@ public class Filter {
                 }
                 if (shouldAdd) {
                     //add nutrient query to the list
-                    nutrientList.getItems().add(inputText);
+                    nutrientList.getItems().add(inputText.toLowerCase());
                 }
             }
 
