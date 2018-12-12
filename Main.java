@@ -130,7 +130,7 @@ public class Main extends Application {
                     filteredNutrient = true;
                 }
                 if (filteredName && filteredNutrient) {
-                    //display list with filtered for both 
+                    //display list with filtered for both
                 }
                 else if (filteredName){
                     //display list with only filtered name
@@ -159,7 +159,7 @@ public class Main extends Application {
                 addNames.addAll(nameToFood.keySet());
                 Collections.sort(addNames);
                 ObservableList<String> items = FXCollections.observableArrayList (
-                    addNames);
+                        addNames);
                 filteredList.setItems(items);
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
@@ -184,7 +184,7 @@ public class Main extends Application {
 
                     Collections.sort(addNames);
                     ObservableList<String> items = FXCollections.observableArrayList (
-                        addNames);
+                            addNames);
                     filteredList.getItems().clear();
                     filteredList.getItems().addAll(items);
                     filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
@@ -249,7 +249,14 @@ public class Main extends Application {
             //click on food in meal list and remove it from the meal list, adds it to filtered list
             mealList.setOnMouseClicked(event -> {
                 if (mealList.getSelectionModel().getSelectedIndex() >= 0) {
+                    FoodData temp = newMeal;
+                    newMeal = new FoodData();
+                    for(FoodItem i : temp.getAllFoodItems()){
+                        if(!i.getName().toLowerCase().equals(mealList.getSelectionModel().getSelectedItem())){
+                            newMeal.addFoodItem(i);
+                        }
 
+                    }
                     //remove the item from the meal list
                     mealArrayList.remove(mealList.getSelectionModel().getSelectedItem());
                     //hashset to use to compare the meal list
@@ -313,11 +320,11 @@ public class Main extends Application {
 
             //Adding the shadow when the mouse cursor is on
             analyzeMealBTN.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent e) {
-                    analyzeMealBTN.setEffect(shadow);
-                }
-            });
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            analyzeMealBTN.setEffect(shadow);
+                        }
+                    });
             topGrid.add(analyzeMealBTN, 3, 1);
 
             //adding the image to the center of the program
