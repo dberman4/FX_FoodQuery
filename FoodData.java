@@ -147,7 +147,8 @@ public class FoodData implements FoodDataADT<FoodItem> {
         if(substring == null) return new ArrayList<FoodItem>();
         List<FoodItem> res = new ArrayList<>();
         for (FoodItem i : foodItemList){
-            if(i.getName().contains(substring)){
+            if(i.getName().toLowerCase().contains(substring)){
+                System.out.println(i.getName());
                 res.add(i);
             }
         }
