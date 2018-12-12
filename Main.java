@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.List;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,7 @@ public class Main extends Application {
     HashMap<String, FoodItem> nameToFood = new HashMap<>();
     static ArrayList<String> filterList;    //list to hold items to be filtered
     static ArrayList<String> mealArrayList;   //list to hold the meal food names
+    static String   path;   //used to see if a new path was entered
     /**
      * Starts the program
      *
@@ -161,25 +163,33 @@ public class Main extends Application {
                 filteredList.setItems(items);
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
-
+            ArrayList<String> mealArrayList = new ArrayList<String>();
             //create new load food button and set the action
             loadBtn = new Button("Load Food");
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
-                filteredList.getItems().clear();
-                for (FoodItem i : foodData.getAllFoodItems()){
-                    nameToFood.put(i.getName().toLowerCase(), i);
-                }
+                File tryOpen = new File(path);
+                if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
+                    for (FoodItem i : foodData.getAllFoodItems()){
+                        nameToFood.put(i.getName().toLowerCase(), i);
+                    }
 
-                ArrayList<String> addNames = new ArrayList<>();
-                addNames.addAll(nameToFood.keySet());
-                Collections.sort(addNames);
-                ObservableList<String> items = FXCollections.observableArrayList (
-                    addNames);
-                filteredList.getItems().addAll(items);
-                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                    ArrayList<String> addNames = new ArrayList<>();
+                    addNames.addAll(nameToFood.keySet());
+
+                    HashSet<String> oldFood = new HashSet<String>();
+                    HashSet<String> newFood = new HashSet<String>();
+
+                    oldFood.addAll(filteredList.getItems());
+
+                    Collections.sort(addNames);
+                    ObservableList<String> items = FXCollections.observableArrayList (
+                        addNames);
+                    filteredList.getItems().clear();
+                    filteredList.getItems().addAll(items);
+                    filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                }
             });
-            ArrayList<String> mealArrayList = new ArrayList<String>();
 
             //click on food in filtered list and add it to meal list, hides it then from filtered list
 
