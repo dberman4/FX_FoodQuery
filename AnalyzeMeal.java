@@ -1,5 +1,9 @@
 package application;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 import javafx.stage.*;
@@ -9,6 +13,9 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 
 import javax.xml.soap.Text;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Filename:   AnalyzeMeal.java
@@ -21,6 +28,8 @@ public class AnalyzeMeal {
 
     static Stage window;
 
+
+
     /**
      * Display this window when usr click analyze meal button
      */
@@ -29,6 +38,7 @@ public class AnalyzeMeal {
         window.setTitle("Analyze Meal");
         window.setMinWidth(300);
 
+        FoodData mealList = new FoodData();
         // Use border pane format layout
         BorderPane borderPane = new BorderPane();
 
@@ -45,8 +55,15 @@ public class AnalyzeMeal {
         right.setHgap(10);
 
         // List all the food that usr selected
-        final ListView<String> foodList = new ListView<String>();
+        ListView<String> foodList = new ListView<>();
+        // Add to food list
+        ObservableList<String> foodInMeal = FXCollections.observableArrayList("Coke", "Big Mac");
+        for(FoodItem i : mealList.getAllFoodItems()){
+            foodInMeal.add(i.getName());
+        }
+        foodList.setItems(foodInMeal);
         foodList.setPrefWidth(120);
+
         VBox foodListBox = new VBox();
         Label foodLabel = new Label("Current Food In the List:");
         foodLabel.setStyle("-fx-font-weight: bold");
@@ -65,10 +82,42 @@ public class AnalyzeMeal {
 
         // Set a two columns table
         TableColumn firstCol = new TableColumn("Type");
-        firstCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        firstCol.setCellValueFactory(new PropertyValueFactory<TableItem, String>("name"));
         TableColumn lastCol = new TableColumn("Nutrition");
-        lastCol.setCellValueFactory(new PropertyValueFactory<>("data"));
-        firstCol.setCellFactory(new PropertyValueFactory<>("Calories"));
+        lastCol.setCellValueFactory(new PropertyValueFactory<TableItem, Double>("value"));
+
+        Double calories = 0.0;
+        Double fat = 0.0;
+        Double carbohydrate = 0.0;
+        Double fiber = 0.0;
+        Double protein = 0.0;
+
+        for (FoodItem i : mealList.getAllFoodItems()){
+            calories += i.getNutrientValue("calories");
+        }
+        for (FoodItem i : mealList.getAllFoodItems()){
+            fat += i.getNutrientValue("fat");
+        }
+        for (FoodItem i : mealList.getAllFoodItems()){
+            carbohydrate += i.getNutrientValue("carbohydrate");
+        }
+        for (FoodItem i : mealList.getAllFoodItems()){
+            fiber += i.getNutrientValue("fiber");
+        }
+        for (FoodItem i : mealList.getAllFoodItems()){
+            protein += i.getNutrientValue("protein");
+        }
+
+        // sample data to show
+        ObservableList<TableItem> data = FXCollections.observableArrayList(
+                new TableItem ("Calories", calories),
+                new TableItem ("Fat", fat),
+                new TableItem ("Fiber", fiber),
+                new TableItem ("Carbohydrate", carbohydrate),
+                new TableItem ("Protein", protein)
+        );
+
+        table.setItems(data);
         table.getColumns().addAll(firstCol, lastCol);
 
         // VBox put labels and tables together
