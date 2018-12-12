@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     Stage window;   //stage to be displayed in the window
-    Button filterBtn, addBtn, loadBtn, saveFoodBtn, saveMealBtn;  //buttons created in the window
+    Button filterBtn, addBtn, loadBtn, saveFoodBtn, saveMealBtn, removeFilterBtn;  //buttons created in the window
     static FoodData foodData = new FoodData(); // Store food List
     static FoodData newMeal = new FoodData(); // Store meal List
     HashMap<String, FoodItem> nameToFood = new HashMap<>(); // mapping name to FoodItem
@@ -220,6 +220,34 @@ public class Main extends Application {
                         filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
                     }
                 }
+            });
+            
+            //create remove filter button and set the action
+            removeFilterBtn = new Button("Remove Filter");
+            removeFilterBtn.setOnAction(event -> {
+                filteredItems.clear();
+                filterList.clear();
+                filteredList.getItems().clear();
+                ArrayList<FoodItem> addList = (ArrayList<FoodItem>) foodData.getAllFoodItems();
+                ArrayList<String> addNames = new ArrayList<String>();
+                //get the names of the food items
+                for (int i = 0; i < addList.size(); i++) {
+                    addNames.add(addList.get(i).getName().toLowerCase());
+                }
+                //add the names to the list to compare
+                HashSet<String> foodFilterSet = new HashSet<String>();
+                foodFilterSet.addAll(addNames);
+                //get all of the meal items into a set
+                HashSet<String> meal = new HashSet<String>();
+                meal.addAll(mealArrayList);
+                //remove the meal items from the foodFilterSet and display the set
+                foodFilterSet.removeAll(meal);
+                addNames.clear();
+                addNames.addAll(foodFilterSet);
+                Collections.sort(addNames);
+                filteredList.getItems().clear();
+                filteredList.getItems().addAll(addNames);
+                filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
 
             //create new add food button and set the action
@@ -410,10 +438,11 @@ public class Main extends Application {
 
             //add the buttons to the grid
             topGrid.add(filterBtn, 0, 1);
-            topGrid.add(addBtn, 1,1);
-            topGrid.add(loadBtn, 2,1);
-            topGrid.add(saveFoodBtn,4,1);
-            topGrid.add(saveMealBtn,5,1);
+            topGrid.add(removeFilterBtn, 1, 1);
+            topGrid.add(addBtn, 2,1);
+            topGrid.add(loadBtn, 3,1);
+            topGrid.add(saveFoodBtn,5,1);
+            topGrid.add(saveMealBtn,6,1);
 
             // Click btn to open a new window shows all nutrient info of the meal
             Button analyzeMealBTN = new Button("Analyze Meal");
@@ -421,7 +450,7 @@ public class Main extends Application {
                 AnalyzeMeal.display();
             });
 
-            topGrid.add(analyzeMealBTN, 3, 1);
+            topGrid.add(analyzeMealBTN, 4, 1);
 
             //adding the image to the center of the program
             Image image = new Image(new FileInputStream("food_logger.png"), 450, 200, false, false);
