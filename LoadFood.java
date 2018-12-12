@@ -56,7 +56,7 @@ public class LoadFood {
         window.setScene(scene);
 
         //show the window
-        window.show();
+        window.showAndWait();
 
     }
 }
