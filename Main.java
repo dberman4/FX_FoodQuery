@@ -174,7 +174,6 @@ public class Main extends Application {
                     }
                     else if (filteredName){
                         //display list with only filtered name
-                        System.out.println("FILTERED NAME");
                         foodFilterSet.retainAll(nameFilterSet);
                         filteredFoodList.addAll(foodFilterSet);
                         Collections.sort(filteredFoodList);
