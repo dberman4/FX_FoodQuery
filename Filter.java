@@ -116,7 +116,7 @@ public class Filter {
         btn.setOnAction(event -> {
             Main.filterList = new ArrayList<String>();
             String nameSearch = nameField.getText();
-            Main.filterList.add(nameSearch);
+            Main.filterList.add(nameSearch.toLowerCase());
             Main.filterList.addAll(nutrientList.getItems());
             window.close();
         });
