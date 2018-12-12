@@ -1,10 +1,7 @@
 package application;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * This class represents the backend for managing all 
@@ -226,6 +223,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
         return foodItemList;
     }
 
+
     /**
      * Save the list of food items in ascending order by name
      * calories,fat,carbohydrate,fiber,protein
@@ -235,6 +233,62 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void saveFoodItems(String filename){
 
+        HashMap<String, FoodItem> nameFood = new HashMap<>();
+        for (FoodItem i : foodItemList){
+            nameFood.put(i.getName(), i);
+        }
+        List<String> nameList = new ArrayList<>();
+        nameList.addAll(nameFood.keySet());
+        Collections.sort(nameList);
+        List<FoodItem> sortedFoodItem = new ArrayList<>();
+        for (String i : nameList){
+            sortedFoodItem.add(nameFood.get(i));
+        }
+        // Define Delimiter
+        final String COMMA_DELIMITER = ",";
+        final String NEW_LINE_SEPARATOR = "\n";
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filename);
+            for (FoodItem i : sortedFoodItem){
+                fileWriter.append(String.valueOf(i.getID()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getName()));
+                fileWriter.append(COMMA_DELIMITER);
+                // Save calories,fat,carbohydrate,fiber,protein
+                fileWriter.append("calories");
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getNutrientValue("calories")));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append("fat");
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getNutrientValue("fat")));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append("carbohydrate");
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getNutrientValue("carbohydrate")));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append("fiber");
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getNutrientValue("fiber")));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append("protein");
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(i.getNutrientValue("protein")));
+                fileWriter.append(NEW_LINE_SEPARATOR);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
