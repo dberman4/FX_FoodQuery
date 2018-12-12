@@ -168,26 +168,25 @@ public class Main extends Application {
             loadBtn = new Button("Load Food");
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
-                File tryOpen = new File(path);
-                if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
-                    for (FoodItem i : foodData.getAllFoodItems()){
-                        nameToFood.put(i.getName().toLowerCase(), i);
-                    }
+                try {
+                    File tryOpen = new File(path);  
+                    if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
+                        for (FoodItem i : foodData.getAllFoodItems()){
+                            nameToFood.put(i.getName().toLowerCase(), i);
+                        }
+                        ArrayList<String> addNames = new ArrayList<>();
+                        addNames.addAll(nameToFood.keySet());
 
-                    ArrayList<String> addNames = new ArrayList<>();
-                    addNames.addAll(nameToFood.keySet());
-
-                    HashSet<String> oldFood = new HashSet<String>();
-                    HashSet<String> newFood = new HashSet<String>();
-
-                    oldFood.addAll(filteredList.getItems());
-
-                    Collections.sort(addNames);
-                    ObservableList<String> items = FXCollections.observableArrayList (
+                        Collections.sort(addNames);
+                        ObservableList<String> items = FXCollections.observableArrayList (
                             addNames);
-                    filteredList.getItems().clear();
-                    filteredList.getItems().addAll(items);
-                    filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                        filteredList.getItems().clear();
+                        filteredList.getItems().addAll(items);
+                        filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                    }
+                }
+                catch (Exception e) {
+
                 }
             });
 
