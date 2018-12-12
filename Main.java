@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     Stage window;   //stage to be displayed in the window
-    Button filterBtn, addBtn, loadBtn;  //buttons created in the window
+    Button filterBtn, addBtn, loadBtn, saveFoodBtn, saveMealBtn;  //buttons created in the window
     static FoodData foodData = new FoodData();
     static FoodData newMeal = new FoodData();
     HashMap<String, FoodItem> nameToFood = new HashMap<>();
@@ -257,6 +257,17 @@ public class Main extends Application {
 
             });
 
+            saveFoodBtn = new Button("Save Food");
+            saveMealBtn = new Button("Save Meal");
+            saveFoodBtn.setOnAction(event -> {
+                foodData.saveFoodItems("new_food_list.csv");
+                AlertBox.display("Save Food", "Successfully save food list to \"new_food_list.csv\"");
+            });
+
+            saveMealBtn.setOnAction(event -> {
+                newMeal.saveFoodItems("new_meal_list.csv");
+                AlertBox.display("Save Meal", "Successfully save meal list to \"new_meal_list.csv\"");
+            });
             //click on food in filtered list and add it to meal list, hides it then from filtered list
 
             filteredList.setOnMouseClicked(event -> {
@@ -315,7 +326,13 @@ public class Main extends Application {
             //click on food in meal list and remove it from the meal list, adds it to filtered list
             mealList.setOnMouseClicked(event -> {
                 if (mealList.getSelectionModel().getSelectedIndex() >= 0) {
-
+                    FoodData temp = newMeal;
+                    newMeal = new FoodData();
+                    for(FoodItem i : temp.getAllFoodItems()){
+                        if(!i.getName().toLowerCase().equals(mealList.getSelectionModel().getSelectedItem())){
+                            newMeal.addFoodItem(i);
+                        }
+                    }
                     //remove the item from the meal list
                     mealArrayList.remove(mealList.getSelectionModel().getSelectedItem());
                     //hashset to use to compare the meal list
@@ -369,6 +386,8 @@ public class Main extends Application {
             topGrid.add(filterBtn, 0, 1);
             topGrid.add(addBtn, 1,1);
             topGrid.add(loadBtn, 2,1);
+            topGrid.add(saveFoodBtn,4,1);
+            topGrid.add(saveMealBtn,5,1);
 
             Button analyzeMealBTN = new Button("Analyze Meal");
             analyzeMealBTN.setOnAction(event -> {
