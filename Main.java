@@ -174,6 +174,7 @@ public class Main extends Application {
                     }
                     else if (filteredName){
                         //display list with only filtered name
+                        System.out.println("FILTERED NAME");
                         foodFilterSet.retainAll(nameFilterSet);
                         filteredFoodList.addAll(foodFilterSet);
                         Collections.sort(filteredFoodList);
@@ -230,9 +231,20 @@ public class Main extends Application {
                 }
                 ArrayList<String> addNames = new ArrayList<>();
                 addNames.addAll(nameToFood.keySet());
+                
+                //remove the filtered out items from the new set
+                HashSet<String> foodFilterSet = new HashSet<String>(); 
+                HashSet<String> mealFoodList = new HashSet<String>();
+                foodFilterSet.addAll(addNames);
+                mealFoodList.addAll(mealArrayList);
+                foodFilterSet.removeAll(mealFoodList);
+                addNames.clear();
+                addNames.addAll(foodFilterSet);
+                //sort the items in ascending order
                 Collections.sort(addNames);
                 ObservableList<String> items = FXCollections.observableArrayList (
                     addNames);
+                filteredList.getItems().clear();
                 filteredList.setItems(items);
                 filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
             });
@@ -241,8 +253,10 @@ public class Main extends Application {
             loadBtn.setOnAction(event -> {
                 LoadFood.display();
                 try {
-                    File tryOpen = new File(path);  
+                    File tryOpen = new File(path);
+                    //see if the file actually could have been opened
                     if (tryOpen.exists() && tryOpen.isFile() && tryOpen.canRead()) {
+                        nameToFood.clear();
                         for (FoodItem i : foodData.getAllFoodItems()){
                             nameToFood.put(i.getName().toLowerCase(), i);
                         }
@@ -252,9 +266,13 @@ public class Main extends Application {
                         Collections.sort(addNames);
                         ObservableList<String> items = FXCollections.observableArrayList (
                             addNames);
+                        //clear the existing lists
                         filteredList.getItems().clear();
+                        mealList.getItems().clear();
+                        mealArrayList.clear();
                         filteredList.getItems().addAll(items);
                         filteredCount.setText("Number of Food Items: " + filteredList.getItems().size());
+                        mealCount.setText("Number of Food Items: " + mealList.getItems().size());
                     }
                 }
                 catch (Exception e) {
