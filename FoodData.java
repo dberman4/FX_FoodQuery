@@ -4,10 +4,12 @@ import java.io.*;
 import java.util.*;
 
 /**
+ * Filename:   application.FoodData.java
+ * Project:    Food Query
+ * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
+ *
  * This class represents the backend for managing all 
  * the operations associated with FoodItems
- * 
- * @author sapan (sapan@cs.wisc.edu)
  */
 public class FoodData implements FoodDataADT<FoodItem> {
     
@@ -20,10 +22,13 @@ public class FoodData implements FoodDataADT<FoodItem> {
     
     /**
      * Public constructor
+     *
+     * Create a list to store all the FoodItems and a HashMap to store all the
+     * nutrient information
      */
     public FoodData() {
-        foodItemList = new ArrayList<>();
-        indexes = new HashMap<>();
+        foodItemList = new ArrayList<>(); //Store FoodItems
+        indexes = new HashMap<>(); // Store Nutrient info
         indexes.put("calories", new BPTree<Double, FoodItem>(3));
         indexes.put("fat", new BPTree<Double, FoodItem>(3));
         indexes.put("carbohydrate", new BPTree<Double, FoodItem>(3));
@@ -56,13 +61,13 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void loadFoodItems(String filePath) {
-        List<FoodItem> newList = new ArrayList<FoodItem>();
+        List<FoodItem> newList = new ArrayList<FoodItem>(); // new list store newly loaded data
         try{
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
-            String line;
-            Scanner scanner;
-            int index = 0;
+            String line; // each line BufferedReader reads
+            Scanner scanner; // scan elements in each line
+            int index = 0; // keep track which column is in scanner right now
             String id;
             String name = "";
 
@@ -115,7 +120,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
                 newList.add(food);
 
             }
-            foodItemList = newList;
+            foodItemList = newList; // replace the origin list with newly loaded data
             //close reader
             reader.close();
         } catch (IOException e) {
@@ -144,11 +149,11 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByName(String substring) {
+        // If the filter condition is null, return an empty list;
         if(substring == null) return new ArrayList<FoodItem>();
-        List<FoodItem> res = new ArrayList<>();
+        List<FoodItem> res = new ArrayList<>(); // store filtered FoodItem
         for (FoodItem i : foodItemList){
             if(i.getName().toLowerCase().contains(substring)){
-                System.out.println(i.getName());
                 res.add(i);
             }
         }
@@ -178,15 +183,16 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public List<FoodItem> filterByNutrients(List<String> rules) {
-        List<FoodItem> res = new ArrayList<>();
+        List<FoodItem> res = new ArrayList<>(); // store filtered FoodItem
         String n[] = rules.get(0).split("\\s+");
-        String nutri = n[0];
-        String compara = n[1];
-        Double value = Double.parseDouble(n[2]);
+        String nutri = n[0]; // nutrient name
+        String compara = n[1]; // comparator
+        Double value = Double.parseDouble(n[2]); // filter value
         if(indexes.containsKey(nutri)){
             res = indexes.get(nutri).rangeSearch(value, compara);
         }
 
+        // if the user enter more than one rule, iteratively go through every rules
         for (String i : rules){
             String s[] = i.split("\\s+");
             String nutrient = s[0];
@@ -194,6 +200,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
             Double values = Double.parseDouble(s[2]);
             if(indexes.containsKey(nutrient)){
                 List<FoodItem> filter = indexes.get(nutrient).rangeSearch(values, comparator);
+                // retain FoodItem satisfying every rules
                 res.retainAll(filter);
             }
         }
@@ -207,7 +214,9 @@ public class FoodData implements FoodDataADT<FoodItem> {
      */
     @Override
     public void addFoodItem(FoodItem foodItem) {
+        // add a single foodItem into the list
         foodItemList.add(foodItem);
+        // add every nutrient information into indexes HashMap
         indexes.get("calories").insert(foodItem.getNutrientValue("calories"), foodItem);
         indexes.get("fat").insert(foodItem.getNutrientValue("fat"), foodItem);
         indexes.get("carbohydrate").insert(foodItem.getNutrientValue("carbohydrate"), foodItem);
@@ -234,13 +243,17 @@ public class FoodData implements FoodDataADT<FoodItem> {
     @Override
     public void saveFoodItems(String filename){
 
+        // mapping food name to foodItem
         HashMap<String, FoodItem> nameFood = new HashMap<>();
         for (FoodItem i : foodItemList){
             nameFood.put(i.getName(), i);
         }
+        // Store food name to a list
         List<String> nameList = new ArrayList<>();
         nameList.addAll(nameFood.keySet());
+        // sorted the food name list
         Collections.sort(nameList);
+        // put every sorted foodItem into a list
         List<FoodItem> sortedFoodItem = new ArrayList<>();
         for (String i : nameList){
             sortedFoodItem.add(nameFood.get(i));
@@ -253,6 +266,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
         try {
             fileWriter = new FileWriter(filename);
             for (FoodItem i : sortedFoodItem){
+                // Save id and name
                 fileWriter.append(String.valueOf(i.getID()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(i.getName()));
@@ -283,6 +297,7 @@ public class FoodData implements FoodDataADT<FoodItem> {
             e.printStackTrace();
         } finally {
             try {
+                // flush everything in the buffer to the file
                 fileWriter.flush();
                 fileWriter.close();
 
