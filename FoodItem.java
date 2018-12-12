@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This class represents a food item with all its properties.
+ * Filename:   application.FoodItem.java
+ * Project:    Food Query
+ * Authors:    Amanda Sarsha, Tanner Bart, Xuefeng Xu, David Berman
  * 
- * @author aka
+ * This class builds a single food item 
  */
 public class FoodItem {
     // The name of the food item.
@@ -27,6 +29,7 @@ public class FoodItem {
     public FoodItem(String id, String name) {
         this.id = id;
         this.name = name;
+        // map nutrient name to data
         nutrients = new HashMap<>();
     }
     
@@ -60,6 +63,7 @@ public class FoodItem {
      * If nutrient already exists, updates its value.
      */
     public void addNutrient(String name, double value) {
+        // check if nutrient name is empty
         if (name == null) return;
         if (nutrients.containsKey(name)) {
             nutrients.replace(name, value);
@@ -73,7 +77,9 @@ public class FoodItem {
      * If not present, then returns 0.
      */
     public double getNutrientValue(String name) {
+        // check if the search key is null
         if (name == null) return 0.0;
+        // check if the key is in the map
         if (!nutrients.containsKey(name)){
             return 0.0;
         }
