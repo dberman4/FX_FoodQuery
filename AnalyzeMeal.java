@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import static application.Main.newMeal;
+
 /**
  * Filename:   AnalyzeMeal.java
  * Project:    Food Query
@@ -28,8 +30,6 @@ public class AnalyzeMeal {
 
     static Stage window;
 
-
-
     /**
      * Display this window when usr click analyze meal button
      */
@@ -39,6 +39,7 @@ public class AnalyzeMeal {
         window.setMinWidth(300);
 
         FoodData mealList = new FoodData();
+        mealList = newMeal;
         // Use border pane format layout
         BorderPane borderPane = new BorderPane();
 
@@ -57,7 +58,7 @@ public class AnalyzeMeal {
         // List all the food that usr selected
         ListView<String> foodList = new ListView<>();
         // Add to food list
-        ObservableList<String> foodInMeal = FXCollections.observableArrayList("Coke", "Big Mac");
+        ObservableList<String> foodInMeal = FXCollections.observableArrayList();
         for(FoodItem i : mealList.getAllFoodItems()){
             foodInMeal.add(i.getName());
         }
@@ -133,7 +134,7 @@ public class AnalyzeMeal {
         // initial scene for this window
         Scene scene = new Scene(borderPane);
         window.setScene(scene);
-        window.show();
+        window.showAndWait();
 
     }
 }
