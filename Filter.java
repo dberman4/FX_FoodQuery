@@ -15,7 +15,7 @@ import javafx.geometry.*;
  */
 public class Filter {
     static Stage window;    //window to be displayed
-    
+
     /**
      * Displays the window
      */
@@ -24,14 +24,14 @@ public class Filter {
         window = new Stage();
         window.setTitle("Filter");
         window.setMinWidth(300);
-        
+
         //create a gridplane to set the items in to be displayed
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
         grid.setAlignment(Pos.CENTER);
-        
+
         //create label and textfield for the name query
         Label nameFilter = new Label("Enter Text to Filter Food Names: ");
         TextField nameField = new TextField();
@@ -114,13 +114,11 @@ public class Filter {
         btn.setOnAction(event -> {
             Main.filterList = new ArrayList<String>();
             String nameSearch = nameField.getText();
-            if (!nameSearch.equals("")) {
-                Main.filterList.add(nameSearch);
-            }
+            Main.filterList.add(nameSearch);
             Main.filterList.addAll(nutrientList.getItems());
             window.close();
         });
-        
+
         //display the window
         grid.add(nameFilter,0,0);
         grid.add(nameField, 0,1);
